@@ -21,6 +21,8 @@ public class ProductMapperHelper {
         product.setProductPrice(createProductRequest.getPrice());
         product.setDescription(createProductRequest.getDescription());
         product.setBrand(createProductRequest.getBrand());
+        product.setSku(createProductRequest.getSku());
+        product.setStock(createProductRequest.getStock());
         return product;
     }
 
@@ -38,6 +40,8 @@ public class ProductMapperHelper {
                 .price(product.getProductPrice())
                 .description(product.getDescription())
                 .brand(product.getBrand())
+                .sku(product.getSku())
+                .stock(product.getStock())
                 .build();
     }
 }

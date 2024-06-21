@@ -4,6 +4,7 @@ package com.photon.product.services;
 import com.photon.infrastructure.Response;
 import com.photon.product.domain.Product;
 import com.photon.product.domain.ProductRepository;
+import com.photon.product.domain.ProductRepositoryWrapper;
 import com.photon.product.helpers.ProductMapperHelper;
 import com.photon.product.request.CreateProductRequest;
 import com.photon.product.request.EditProductRequest;
@@ -28,6 +29,8 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     private final FileStorageFactoryService fileStorageFactoryService;
 
+    private final ProductRepositoryWrapper productRepositoryWrapper;
+
     @Override
     @Transactional
     public Response saveProduct(CreateProductRequest createProductRequest, MultipartFile productImage) {
@@ -50,5 +53,27 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     @Transactional
     public Response updateProduct(UUID productId, EditProductRequest editProductRequest) {
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void reduceStock(UUID productId, int qty) {
+        log.debug("Started reduce stock productId={}, qty={}", productId, qty);
+        final Product product = this.productRepositoryWrapper.findById(productId);
+        log.debug("Before reducing stock for product={}, totalStock={}", productId, product.getStock());
+        product.setStock((product.getStock() - qty));
+        productRepository.saveAndFlush(product);
+        log.debug("After stock reduced for product={}, totalStock={}", productId, product.getStock());
+    }
+
+    @Override
+    @Transactional
+    public void rollbackStock(UUID productId, int qty) {
+        log.debug("Started rollback stock productId={}, qty={}", productId, qty);
+        final Product product = this.productRepositoryWrapper.findById(productId);
+        log.debug("Before rollback stock for product={}, totalStock={}", productId, product.getStock());
+        product.setStock((product.getStock() + qty));
+        productRepository.saveAndFlush(product);
+        log.debug("After stock roll backed for product={}, totalStock={}", productId, product.getStock());
     }
 }

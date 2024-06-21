@@ -15,4 +15,8 @@ public interface ProductCommandService {
     Response saveProduct(CreateProductRequest createProductRequest, MultipartFile productImage);
 
     Response updateProduct(UUID productId, EditProductRequest editProductRequest);
+
+    void reduceStock(UUID productId, int qty);
+
+    void rollbackStock(UUID productId, int qty);
 }

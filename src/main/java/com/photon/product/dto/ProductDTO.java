@@ -22,4 +22,8 @@ public class ProductDTO implements Serializable {
 
     private String brand;
 
+    private int stock;
+
+    private String sku;
+
 }

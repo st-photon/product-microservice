@@ -47,6 +47,13 @@ public class Product implements Serializable {
     @Column(name = "brand")
     private String brand;
 
+    @Column(name = "sku", unique = true)
+    private String sku;
+
+    @Column(name = "stock", nullable = false, columnDefinition = "integer default '1'")
+    @Basic(optional = false)
+    private int stock;
+
     @Version
     private Long version;
 }

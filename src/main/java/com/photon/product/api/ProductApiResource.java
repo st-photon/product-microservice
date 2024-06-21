@@ -57,4 +57,14 @@ public class ProductApiResource {
     public String helloWorld() {
         return "hello world";
     }
+
+    @PutMapping("/{id}/reduceStock")
+    public void reduceStock(@PathVariable UUID id, @RequestParam int qty) {
+        productCommandService.reduceStock(id, qty);
+    }
+
+    @PutMapping("/{id}/rollbackStock")
+    public void rollbackStock(@PathVariable UUID id, @RequestParam int qty) {
+        productCommandService.rollbackStock(id, qty);
+    }
 }
